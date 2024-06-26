@@ -2,11 +2,13 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ResponseTrait;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    use ResponseTrait;
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -41,8 +43,10 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        $this->renderable(function (\Spatie\Permission\Exceptions\UnauthorizedException $e, $request) {
+                
+            return $this->ReturnError("You do not have the required authorization.",403);
+            
+        });    
     }
 }

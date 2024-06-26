@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegister;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
@@ -40,10 +41,13 @@ class AuthController extends Controller
         'email' => $request->email,
         'password' => Hash::make($request->password),
         ]);
+        
+        event(new UserRegister($user));
 
         $token = Auth::login($user);
         $msg= "successfully User created";
         return $this->Return_Register_Login_Refresh_Success($user, $token, $msg);
+
     }
   
     public function logout()
@@ -63,7 +67,7 @@ class AuthController extends Controller
         return $this->ReturnError("could_not_refresh_token",500);
       }
 
-        $msg = "successfully  Token refresh";
+        $msg = "successfully  Token  refresh";
         return $this->Return_Register_Login_Refresh_Success(Auth::user(),$NewToken,$msg);
     }
 
