@@ -1,13 +1,18 @@
 <?php
 
 use App\Http\Controllers\Admin\RoleAndPermissionController;
+use App\Http\Controllers\Admin\Room_TypeController;
+use App\Http\Controllers\Admin\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Models\Room_Type;
 use App\Models\User;
 use PhpParser\Node\Stmt\Return_;
 use App\Traits\ResponseTrait;
 use GuzzleHttp\Psr7\Response;
+
+use function Laravel\Prompts\error;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +26,6 @@ use GuzzleHttp\Psr7\Response;
 */
 
 Route::controller(AuthController::class)->group(function () {
-
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout')->middleware("auth:api");
@@ -39,4 +43,8 @@ Route::middleware(['auth:api', 'role:Admin', 'permission:Roles and permissions m
         Route::put('UpdateToUserRole/{user}', 'UpdateToUserRole');
         Route::put('UpdateToAdminRole/{user}', 'UpdateToAdminRole');
     });
+});
+Route::middleware(['auth:api', 'role:Admin', 'permission:Services and rooms management'])->group(function () {
+    Route::apiResource('room_types', Room_TypeController::class);
+    Route::apiResource('rooms', RoomController::class);
 });
