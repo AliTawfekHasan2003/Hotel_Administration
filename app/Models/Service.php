@@ -5,25 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room_Type extends Model
+class Service extends Model
 {
-    protected $table = 'room_types';
     use HasFactory;
 
     protected $fillable = [
         'name',
         'desc',
+        'hourly_price',
         'daily_price',
-        'monthly_price',
-    ];
-
-    public function rooms()
-    {
-        return $this->hasMany(Room::class, 'Room_Type_id', 'id');
-    }
+            ];
 
     public function room_services()
     {
-        return $this->hasMany(Room_Service::class, 'Room_Type_id', 'id');
+      return $this->hasMany(Room_Service::class, 'Service_id','id');
     }
 }

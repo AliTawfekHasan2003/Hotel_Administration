@@ -22,7 +22,6 @@ class RoleAndPermissionController extends Controller
           return $this->ReturnData("permissions", PermissionResource::collection($permissions), "successfully get all permissions.");
      }
 
-
      public function GetAllPermissionsForAdmin($id)
      {
           $user = User::find($id);
@@ -65,7 +64,6 @@ class RoleAndPermissionController extends Controller
           return $this->ReturnSuccess("successfully revoke all Permissions from Admin.");
      }
 
-
      public function AssignPermissionToAdmin(AdminPermissionRequest $request)
      {
           $request->validated();
@@ -81,7 +79,7 @@ class RoleAndPermissionController extends Controller
           }
           $user->givePermissionTo($perm->name);
 
-          return $this->ReturnSuccess("Successfully assign  Permission to Admin");
+          return $this->ReturnSuccess("successfully assign  Permission to Admin");
      }
 
      public function RevokePermissionFromAdmin(AdminPermissionRequest $request)
@@ -99,9 +97,8 @@ class RoleAndPermissionController extends Controller
           }
           $user->revokePermissionTo($perm->name);
 
-          return $this->ReturnSuccess("Successfully revoke Permission from Admin.");
+          return $this->ReturnSuccess("successfully revoke Permission from Admin.");
      }
-
 
      public function UpdateToAdminRole($id)
      {

@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\RoleAndPermissionController;
+use App\Http\Controllers\Admin\Room_ServiceController;
 use App\Http\Controllers\Admin\Room_TypeController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -44,7 +46,17 @@ Route::middleware(['auth:api', 'role:Admin', 'permission:Roles and permissions m
         Route::put('UpdateToAdminRole/{user}', 'UpdateToAdminRole');
     });
 });
+
 Route::middleware(['auth:api', 'role:Admin', 'permission:Services and rooms management'])->group(function () {
     Route::apiResource('room_types', Room_TypeController::class);
     Route::apiResource('rooms', RoomController::class);
+    Route::apiResource('services', ServiceController::class);
 });
+ 
+Route::middleware(['auth:api', 'role:Admin', 'permission:Services and rooms management'])->group(function () {
+    Route::controller(Room_ServiceController::class)->group(function () {
+        Route::post('AssignServicesToRoom_type','AssignServicesToRoom_type');
+        Route::post('RevokeServicesFromRoom_type','RevokeServicesFromRoom_type');
+    });
+});
+

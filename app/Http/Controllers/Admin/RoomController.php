@@ -10,19 +10,18 @@ use App\Models\Room;
 use App\Traits\ResponseTrait;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Return_;
+use App\Traits\CommonIndexTrait;
+use App\Traits\CommonShowTrait;
 
 class RoomController extends Controller
 {
-  use ResponseTrait;
+  use ResponseTrait, CommonIndexTrait, CommonShowTrait;
   /**
    * Display a listing of the resource.
    */
   public function index()
   {
-    $rooms = Room::with("Room_type")->get();
-
-    return $this->ReturnData("rooms", RoomResource::collection($rooms), "successfully get all rooms.");
+    return $this->Room_index();
   }
 
   /**
@@ -46,13 +45,7 @@ class RoomController extends Controller
    */
   public function show($id)
   {
-    $Room = Room::where("id", $id)->with("Room_type")->first();
-
-    if (!$Room) {
-      return $this->ReturnError("room not found.", 404);
-    }
-
-    return $this->ReturnData("Room", new RoomResource($Room), "successfully room displayed.");
+    return $this->Room_show($id);
   }
 
   /**

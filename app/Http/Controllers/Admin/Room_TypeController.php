@@ -7,6 +7,8 @@ use App\Http\Requests\Room_TypeRequest;
 use App\Http\Resources\Room_TypeResource;
 use App\Http\Resources\Room_TypeResources;
 use App\Models\Room_Type;
+use App\Traits\CommonIndexTrait;
+use App\Traits\CommonShowTrait;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\Request;
 
@@ -14,15 +16,13 @@ use function Laravel\Prompts\warning;
 
 class Room_TypeController extends Controller
 {
-    use ResponseTrait;
+    use ResponseTrait , CommonIndexTrait, CommonShowTrait;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $room_types = Room_Type::with("rooms")->get();
-
-        return $this->ReturnData("room_types", Room_TypeResource::collection($room_types), "successfully get all room_types.");
+        return $this->Room_Type_index();
     }
 
     /**
@@ -47,13 +47,7 @@ class Room_TypeController extends Controller
      */
     public function show($id)
     {
-        $Room_Type = Room_Type::where("id", $id)->with("rooms")->first();
-
-        if (!$Room_Type) {
-            return $this->ReturnError("room_type not found.", 404);
-        }
-
-        return $this->ReturnData("Room_Type", new Room_TypeResource($Room_Type), "successfully room_type displayed.");
+        return $this->Room_Type_show($id);
     }
 
     /**
@@ -84,20 +78,25 @@ class Room_TypeController extends Controller
      */
     public function destroy($id)
     {
-        $Room_Type = Room_Type::find($id);
+        $Room_Type = Room_Type::with(["rooms","room_services"])->find($id);
 
         if (!$Room_Type) {
             return $this->ReturnError("room_type not found.", 404);
         }
 
         $rooms = $Room_Type->rooms;
+        $room_services = $Room_Type->room_services;
 
         foreach ($rooms as $room) {
             $room->delete();
         }
+ 
+        foreach ($room_services as $room_service) {
+            $room_service->delete();
+        }
 
         $Room_Type->delete();
 
-        return $this->ReturnSuccess("successfully room_type and its related rooms deleted.");
+        return $this->ReturnSuccess("successfully room_type with its related rooms and room_services deleted.");
     }
 }
