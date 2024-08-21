@@ -17,26 +17,31 @@ use App\Http\Resources\RoomResource;
 use App\Http\Resources\RoomResources;
 use App\Models\Room;
 
-Trait CommonIndexTrait {
-
-public function Room_Type_index()
+trait CommonIndexTrait
 {
- $room_types = Room_Type::all();
+    use ResponseTrait, PaginationTrait;
 
-return $this->ReturnData("room_types", Room_TypeResource::collection($room_types), "successfully get all room_types.");
-}
+    public function Room_Type_index()
+    {
+        $room_types = Room_Type::paginate(20);
 
-public function Room_index()
-{
- $rooms = Room::all();
+        $data = Room_TypeResource::collection($room_types);
+        return $this->ReturnPaginatedData($data, "successfully get room_types with pagination information.");
+    }
 
- return $this->ReturnData("rooms", RoomResource::collection($rooms), "successfully get all rooms.");
-}
+    public function Room_index()
+    {
+        $rooms = Room::paginate(20);
 
-public function Service_index()
-{
-$services = Service::all();
+        $data = RoomResource::collection($rooms);
+        return $this->ReturnPaginatedData($data, "successfully get rooms with pagination information.");
+    }
 
-return $this->ReturnData("services",ServiceResource::collection($services), "successfully get all services.");
-}
+    public function Service_index()
+    {
+        $services = Service::paginate(20);
+
+        $data = ServiceResource::collection($services);
+        return $this->ReturnPaginatedData($data, "successfully get services with pagination information.");
+    }
 }
