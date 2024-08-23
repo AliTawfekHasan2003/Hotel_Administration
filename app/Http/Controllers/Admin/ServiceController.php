@@ -35,6 +35,8 @@ class ServiceController extends Controller
             "desc" => $request->desc,
             "hourly_price" => $request->hourly_price,
             "daily_price"  => $request->daily_price,
+            "is_limited" => $request->is_limited,
+            "total_units" => $request->total_units,
         ]);
 
         return $this->ReturnSuccess("successfully service created.");
@@ -66,6 +68,8 @@ class ServiceController extends Controller
             "desc" => $request->desc ?? $service->desc,
             "hourly_price" => $request->hourly_price ?? $service->hourly_price,
             "daily_price" => $request->daily_price ?? $service->daily_price,
+            "is_limited" => $request->is_limited ?? $service->is_limited,
+            "total_units" => $request->total_units ?? $service->total_units,
         ]);
 
         return $this->ReturnSuccess("successfully service updated.");

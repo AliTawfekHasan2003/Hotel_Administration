@@ -14,6 +14,8 @@ class Service extends Model
         'desc',
         'hourly_price',
         'daily_price',
+        'is_limited',
+        'total_units',
             ];
 
     public function room_services()

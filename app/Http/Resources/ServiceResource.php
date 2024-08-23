@@ -22,6 +22,8 @@ class ServiceResource extends JsonResource
       "desc" => $this->desc,
       "hourly_price" => $this->hourly_price,
       "daily_price"  => $this->daily_price,
+      "is_limited"  => $this->is_limited,
+      "total_units" => $this->total_units
     ];
 
     if ($this->relationLoaded("room_services")) {

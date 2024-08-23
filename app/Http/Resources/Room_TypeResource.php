@@ -33,7 +33,7 @@ class Room_TypeResource extends JsonResource
         if ($this->relationLoaded("room_services")) {
             foreach ($this->room_services as $Room_service) {
                 if ($Room_service->relationLoaded("Service")) {
-                    $Room_type['Services'][]  = new RoomResource($Room_service->Service);
+                    $Room_type['Services'][]  = new ServiceResource($Room_service->Service);
                 }
             }
         }

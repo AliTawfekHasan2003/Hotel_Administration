@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("desc");
             $table->double("daily_price");
             $table->double("hourly_price");
+            $table->boolean("is_limited");
+            $table->integer("total_units")->nullable();
             $table->timestamps();
         });
     }

@@ -29,7 +29,9 @@ class ServiceRequest extends FormRequest
           'name' => 'required|string|max:255',
           'desc' => 'required|string|max:255',
           'hourly_price' => 'required|numeric|min:0.01',
-          'daily_price' => 'required|numeric|min:0.01',           
+          'daily_price' => 'required|numeric|min:0.01',  
+          'is_limited'  => 'required|boolean',
+          'total_units' => 'required_if:is_limited,true|integer|min:1',
         ];
     }
        protected function failedValidation(Validator $validator)
