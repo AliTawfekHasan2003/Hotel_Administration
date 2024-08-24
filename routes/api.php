@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\ServiceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\User\Room_TypeController as UserRoom_Type_Controller;
+use App\Http\Controllers\User\RoomController as UserRoomController;
+use App\Http\Controllers\User\ServiceController as UserServiceController;
 use App\Models\Room_Type;
 use App\Models\User;
 use PhpParser\Node\Stmt\Return_;
@@ -55,8 +58,23 @@ Route::middleware(['auth:api', 'role:Admin', 'permission:Services and rooms mana
  
 Route::middleware(['auth:api', 'role:Admin', 'permission:Services and rooms management'])->group(function () {
     Route::controller(Room_ServiceController::class)->group(function () {
-        Route::post('AssignServicesToRoom_type','AssignServicesToRoom_type');
-        Route::post('RevokeServicesFromRoom_type','RevokeServicesFromRoom_type');
+        Route::post('AssignServicesToRoom_type', 'AssignServicesToRoom_type');
+        Route::post('RevokeServicesFromRoom_type', 'RevokeServicesFromRoom_type');
     });
 });
+  
+Route::controller(UserRoom_Type_Controller::class)->group(function(){
+    Route::get('Room_Type/index', 'index');
+    Route::get('Room_Type/show/{Room_Type}', 'show');
+});
+
+Route::controller(UserRoomController::class)->group(function(){
+    Route::get('Room/index', 'index');
+    Route::get('Room/show/{Room}', 'show');
+});
+
+Route::controller(UserServiceController::class)->group(function(){
+    Route::get('Service/index', 'index');
+    Route::get('Service/show/{Service}', 'show');
+}); 
 
